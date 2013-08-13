@@ -64,7 +64,6 @@ Gem::Specification.new do |s|
     "lib/vips/reader.rb",
     "lib/vips/version.rb",
     "lib/vips/writer.rb",
-    "ruby-vips-0.3.4.gem",
     "ruby-vips.gemspec",
     "ruby.supp"
   ]

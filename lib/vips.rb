@@ -5,6 +5,7 @@ require 'vips_ext'
 require 'vips/version'
 require 'vips/reader'
 require 'vips/writer'
+require 'vips/composite'
 
 module VIPS
   class << self

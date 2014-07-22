@@ -3,7 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/jcupitt/ruby-vips.png)](http://travis-ci.org/jcupitt/ruby-vips)
 
 ruby-vips is a ruby extension for [vips](http://www.vips.ecs.soton.ac.uk). 
-It is fast and it can process images without requiring the 
+It is fast and it can work without needing the 
 entire image to be loaded into memory. For example, the benchmark at 
 [vips-benchmarks](https://github.com/stanislaw/vips-benchmarks) loads a large
 image, crops, shrinks, sharpens and saves again:
@@ -47,36 +47,29 @@ latest libvips you can.
   * libvips 7.24 and later (it will work with earlier libvips, but some
     features may not be functional)
 
-## Installation.
+## Installation prerequisites
 
-### Ubuntu Prerequisites.
+### Ubuntu 
 
 ```bash
 $ apt-get install libvips-dev
 ```
 
-### OS X Prerequisites.
+### OS X 
+
+Install [homebrew](http://mxcl.github.com/homebrew) and enter:
 
 ```bash
 $ brew tap homebrew/science
-$ brew install vips
-```
-
-This will give you a very bare-bones vips, missing things like imagemagick
-loading, openslide support, FFTs, and so on. To get a list of all the optional
-dependencies, try:
-
-```bash
-$ brew info vips
-```
-
-For a full-fat version, try:
-
-```bash
 $ brew install vips --with-cfitsio --with-fftw --with-imagemagick \
     --with-libexif --with-liboil --with-libtiff --with-little-cms \
     --with-openexr --with-openslide --with-pango
 ```
+
+libvips has a lot of optional dependencies. You
+may not need all of them.  See [the notes
+here](http://www.vips.ecs.soton.ac.uk/index.php?title=Build_on_OS_X) for
+more information.
 
 If you want to build things outside homebrew which depend on vips,
 such as ruby-vips, your pkg-config will need to be working. You
@@ -93,14 +86,14 @@ To verify that your vips install is correct and working, try:
 
 ```bash
 $ vips --version
-vips-7.32.1-Mon May 20 10:01:38 BST 2013
+vips-7.36.4-Tue Nov 19 12:22:47 GMT 2013
 ```
 
-To verrify that your pkg-config is working correctly with vips, try:
+To verify that your pkg-config is working correctly with vips, try:
 
 ```bash
 $ pkg-config vips --libs
--L/usr/local/Cellar/vips/7.32.1/lib ... a lot of stuff
+-L/usr/local/Cellar/vips/7.36.4/lib ... a lot of stuff
 ```
 
 TODO: Describe & test with macports.

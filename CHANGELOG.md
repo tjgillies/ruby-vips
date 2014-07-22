@@ -1,5 +1,26 @@
 # master 
 
+# Version 0.3.9
+
+* removed a stray file from gemspec [Alessandro Tagliapietra]
+* updated bundle [John Cupitt]
+* revised spec tests [John Cupitt]
+* fix a segv in im.label_regions [John Cupitt]
+* add a Valgrind suppressions file [John Cupitt]
+* fix .monotonic? [John Cupitt]
+* fix .data on coded images [John Cupitt]
+* add .size, see issue #58 [John Cupitt]
+* add rdoc-data dep, maybe it will help ruby-gems docs [John Cupitt]
+
+# Version 0.3.8
+
+* add VIPS::thread_shutdown(), must be called on foreign thread exit [John Cupitt]
+
+# Version 0.3.7
+
+* update build dependencies [John Cupitt]
+* README updated [John Cupitt]
+
 # Version 0.3.6
 
 * add png and jpg load from memory buffer [John Cupitt]

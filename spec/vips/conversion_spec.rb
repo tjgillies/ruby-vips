@@ -16,8 +16,6 @@ describe VIPS::Image do
   end
 
   it "should convert a double mask to an image" do
-    pending "calling im_mask2vips segfaults."
-
     coeffs = [
       [2.3, 3.3, 4.3],
       [1.2, 3.4, 5.6],
@@ -38,9 +36,8 @@ describe VIPS::Image do
   end
 
   it "should create pass-through copies of files" do
-    pending "calling im_copy_file segfaults. This is on Ubuntu 10.04, vips 7.20.4-1"
     im = @image.invert.copy_file
-    im.filename.should =~ /^\/tmp\//
+    im.x_size.should == @image.x_size
   end
 
   it "should scale the color range in an image" do
@@ -56,32 +53,22 @@ describe VIPS::Image do
     im2.band_fmt.should == :UCHAR
   end
 
-  it "should turn in individual band in an image to 8-bit by discarding bits" do
+  it "should turn an individual band in an image to 8-bit by discarding bits" do
     im = @image.multiply(@image)
     im2 = im.msb(0)
-    pending "figure out how to validate per-band 8-bit conversion"
+    im3 = (im >> 8).extract_band(0)
+    im2.equal(im2).min.should == 255
   end
 
   it "should swap the byte ordering of image data" do
-    im = @image.copy_swap
-    pending "validate byte ordering after swap"
-  end
+    # make a u16 image
+    im = @image.multiply(@image)
+    im2 = im.copy_swap
 
-  it "should swap the byte ordering of image data" do
-    pending "Conditionally compile & test. Validate byte ordering after swap."
-    im = @image.copy_native false
-  end
-
-  it "should convert a complex image with rectangular coordinates to polar coordinates" do
-    im = @image.ri2c(@image.invert)
-    im2 = im.c2amph
-    pending "Validate polar conversion."
-  end
-
-  it "should convert a complex image with polar coordinates to rectangular coordinates" do
-    im = @image.ri2c(@image.invert).c2amph
-    im2 = im.c2rect
-    pending "Validate polar conversion."
+    # just test pixel zero
+    px1 = im[0,0][0]
+    px2 = im2[0,0][0]
+    ((px1 >> 8) | ((px1 & 255) << 8)).should == px2
   end
 
   it "should combine a real image and an imaginary image into a complex image" do
@@ -99,6 +86,15 @@ describe VIPS::Image do
     im = @image.ri2c(@image.invert)
     im2 = im.c2real
     im2.band_fmt.should == :FLOAT
+  end
+
+  it "should convert a complex image between rectangular and polar coordinates" do
+    im = @image.ri2c(@image.invert)
+    im2 = im.c2amph.c2rect
+    im3 = im2.c2real
+    im4 = (im3 - @image).abs
+    # we can get small rounding errors
+    im4.max.should < 0.001
   end
 
   it "should scale the power spectrum of an image" do
@@ -127,7 +123,7 @@ describe VIPS::Image do
     im.max.should == 0.0
   end
 
-  pending "should generate text to a new image" do
+  it "should generate text to a new image" do
     im = VIPS::Image.text "Hello VIPS!", "sans 12", 300, 0, 72
     im.x_size.should == 65
   end
@@ -209,14 +205,13 @@ describe VIPS::Image do
     im.avg.should approximate(108.583)
   end
 
-  pending "should place two image adjacent to each other" do
+  it "should place two image adjacent to one another" do
     text = VIPS::Image.text "Hello VIPS!", "sans 12", 300, 0, 72
-    text_3band = text.bandjoin text, text
-    im = @image.lrjoin(text_3band)
-    im.avg.should approximate(65.6376)
+    im = @image.lrjoin(text)
+    im.avg.should approximate(65.56)
   end
 
-  it "should place two image on top of each other" do
+  it "should place two image on top of one another" do
     text = VIPS::Image.text "Hello VIPS!", "sans 12", 300, 0, 72
     text_3band = text.bandjoin text, text
     im = @image.tbjoin(text_3band)

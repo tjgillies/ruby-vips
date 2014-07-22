@@ -27,19 +27,19 @@ describe VIPS::Image do
     # TODO: some kind of validation of the generated image
   end
 
-  pending "should perform a seperable convolution with an int mask" do
+  it "should perform a seperable convolution with an int mask" do
     m = VIPS::Mask.new [[1, -2, 3]], 3
     im = @image.convsep m
-    im.should match_sha1('1389e7d7fb3f1646e774ac69d6a8802c26652aa5')
+    im.should match_sha1('4c017e1d28bbc4833faad83142231a4a88663289')
   end
 
-  pending "should perform a seperable convolution with a float mask" do
+  it "should perform a seperable convolution with a float mask" do
     m = VIPS::Mask.new [[1.2, -2.1, 3.0]], 3.4
     im = @image.convsep m
-    im.should match_sha1('e6c79ddd45c93b31a77c830c925561c6d2139529')
+    im.should match_sha1('a3263e83248b79df792d22981ad2c863aa28e887')
   end
 
-  it "should convolute by reapplying the mask 8 times and rotating 45 deg each time" do
+  it "should convolve 8 times, rotating 45 deg each time" do
     mask = [
       [ 2, -3, 1 ],
       [ 2,-3, 2 ],
@@ -50,7 +50,7 @@ describe VIPS::Image do
     im.should match_sha1('e37d7c4a0b2f8863c1ee0760b2de1d47e8359b60')
   end
 
-  it "should convolute by applying mask twice, rotated 90 deg the second time" do
+  it "should convolve twice, rotating 90 deg the second time" do
     mask = [
       [ 2, -3, 4 ],
       [ 2,-3, 2 ],
@@ -61,7 +61,7 @@ describe VIPS::Image do
     im.should match_sha1('a6e3e83f58c7599d616722e98f7c586e4b1a8c21')
   end
 
-  it "should convolute by reapplying the mask 4 times and rotating 45 deg each time" do
+  it "should convolve 4 times, rotating 45 deg each time" do
     mask = [
       [ 2, -3, 1 ],
       [ 2,-3, 2 ],
@@ -72,10 +72,11 @@ describe VIPS::Image do
     im.should match_sha1('78580ff728cca4722c73f610406ac8eba0604ba9')
   end
 
-  pending "should sharpen an image coded in LABS or LABQ format" do
+  it "should sharpen an image coded in LABS or LABQ format" do
     im = @image.srgb_to_xyz.xyz_to_lab.lab_to_labs.sharpen(7, 1.5, 20, 50, 1, 2)
-    if Spec::Helpers.match_vips_version("> 7.23")
-      im.should match_sha1('f46d4ba8b0c16e19af95fcd3518caae0a7c2170d')
+    # revised in 7.38
+    if Spec::Helpers.match_vips_version("> 7.38")
+      im.should match_sha1('f6fdf3136cc01b3f267b80450f4c4419ae22b77a')
     end
   end
 
@@ -89,26 +90,39 @@ describe VIPS::Image do
     im.should match_sha1('d9d95867bed664bfe1680d02b9163a7d99406a60')
   end
 
-  it "should calculate a fast corrolation surface between two images" do
+  it "should calculate a fast correlation surface between two images" do
     segment = @image.extract_area(120, 120, 30, 30, 1, 1).scale
     im = @image.extract_band(0).fastcor(segment)
-    pending "not sure how to get a useful image from this method"
+    # revised in 7.38
+    if Spec::Helpers.match_vips_version("> 7.38")
+      im.should match_sha1('e14c148c8b9f86707ac911f61b166e9f2e1cf54d')
+    end
   end
 
-  it "should calculate a corrolation surface between two images" do
+  it "should calculate a correlation surface between two images" do
     segment = @image.extract_area(120, 120, 30, 30, 1, 1).scale
     im = @image.extract_band(0).spcor(segment)
+    # revised in 7.38
+    if Spec::Helpers.match_vips_version("> 7.38")
+      im.should match_sha1('d2c2bcf3b6d28f9ae705dadae82b11c2df1bf344')
+    end
   end
 
-  it "should calculate a corrolation surface between two images via gradients" do
+  it "should calculate a correlation surface between two images via gradients" do
     segment = @image.extract_area(120, 120, 30, 30, 1, 1).scale
     im = @image.extract_band(0).gradcor(segment)
-    im.should match_sha1('83c74a9d78eb4023e68fabf88aff052aa8b3d757')
+    # revised in 7.38
+    if Spec::Helpers.match_vips_version("> 7.38")
+      im.should match_sha1('3f0193e24f89b5c5b98f56e48c1ee858ec2a2c01')
+    end
   end
 
   it "should generate an image where every pixel represents the contrast within a window" do
     im = @image.bandmean.contrast_surface(10, 2)
-    im.should match_sha1('bf06f18589d8a264d26ecf8fbc3af283678acda8')
+    # revised in 7.38
+    if Spec::Helpers.match_vips_version("> 7.38")
+      im.should match_sha1('3bee875c3f12c263bf96ea8881e5b76b10f1ae7e')
+    end
   end
 
   it "should add gaussian noise to an image" do

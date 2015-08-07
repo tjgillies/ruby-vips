@@ -43,6 +43,7 @@ module VIPS
       rescue
         GC.start
         path.gsub!(":1,","")
+        path.gsub!(",sequential","")
         puts "PATH"
         puts path
         puts "SEQ"

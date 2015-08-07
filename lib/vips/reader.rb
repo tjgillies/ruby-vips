@@ -46,6 +46,8 @@ module VIPS
         puts path
         puts "SEQ"
         puts seq
+        puts "CAT"
+        puts `cat #{path}`
         im = read_internal path, seq
       end
       im

@@ -77,7 +77,6 @@ module VIPS
       str = "#{@path}:#{@shrink_factor}"
       str << "," 
       str << "fail" if @fail_on_warn
-p
       seq = 0
       if VIPS.sequential_mode_supported?
         str << "," 

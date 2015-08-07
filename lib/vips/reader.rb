@@ -42,6 +42,10 @@ module VIPS
         im = read_internal path, seq
       rescue
         GC.start
+        puts "PATH"
+        puts path
+        puts "SEQ"
+        puts seq
         im = read_internal path, seq
       end
       im

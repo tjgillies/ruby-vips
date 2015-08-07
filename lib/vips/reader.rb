@@ -48,6 +48,9 @@ module VIPS
         puts seq
         puts "CAT"
         puts `cat #{path}`
+        puts "FILES"
+        other_path = path.split("/")[0..-2].join("/")
+        puts `ls #{other_path}`
         im = read_internal path, seq
       end
       im
@@ -74,7 +77,7 @@ module VIPS
       str = "#{@path}:#{@shrink_factor}"
       str << "," 
       str << "fail" if @fail_on_warn
-
+p
       seq = 0
       if VIPS.sequential_mode_supported?
         str << "," 

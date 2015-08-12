@@ -44,15 +44,6 @@ module VIPS
         GC.start
         path.gsub!(":1,","")
         path.gsub!(",sequential","")
-        puts "PATH"
-        puts path
-        puts "SEQ"
-        puts seq
-        puts "CAT"
-        puts `cat #{path}`
-        puts "FILES"
-        other_path = path.split("/")[0..-2].join("/")
-        puts `ls #{other_path}`
         im = read_internal path, seq
       end
       im
